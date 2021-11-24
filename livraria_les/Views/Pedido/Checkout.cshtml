@@ -1,0 +1,74 @@
+﻿@model livraria_les.Models.Pedido
+
+@{
+    ViewBag.Title = "Checkout";
+}
+<br />
+
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Checkout</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.DisplayName("Total da compra: R$ " + Model.Total)
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Cliente.Cartoes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @for (int i = 0; i < ViewBag.CartaoDDL.Count; i++)
+                {
+                    <label class="checkbox-inline"><input type="checkbox" name="CartaoDDL" value="@ViewBag.CartaoDDL[i].Id">@ViewBag.CartaoDDL[i].Numero</label>
+                }
+            </div>
+            @Html.ActionLink("Novo Cartão", "Cadastrar", "Cartao")
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Cliente.Cupons, htmlAttributes: new { @class = "control-label" })
+            <div>
+                @Html.DropDownListFor(model => model.Cliente.Cupons, (SelectList)ViewBag.CuponsClienteDDL, String.Empty, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-md-12">
+        @* Área para os cupons de desconto *@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Endereco, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Endereco, (SelectList)ViewBag.EnderecosClienteDDL, String.Empty, new { @class = "form-control" })
+        </div>        
+    </div>
+    <div class="form-group">
+        @Html.ActionLink("Novo Endereço", "Cadastrar", "Endereco")
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TotalPago, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TotalPago, new { htmlAttributes = new { @class = "form-control", @placeholder = "10,4" } })
+            @Html.ValidationMessageFor(model => model.TotalPago, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Finalizar" class="btn btn-primary" />
+    </div>
+}

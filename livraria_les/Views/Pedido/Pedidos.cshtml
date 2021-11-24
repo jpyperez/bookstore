@@ -1,0 +1,100 @@
+﻿@model IEnumerable<livraria_les.Models.Pedido>
+
+@{
+    ViewBag.Title = "Gestão de Pedidos";
+}
+<br />
+
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Gestão de Pedidos</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Editor("Status", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "Nome" } })
+        @*@Html.Editor("Edicao", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "Edição" } })
+        @Html.Editor("ISBN", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "ISBN" } })*@
+        <select class="form-control col-md-2" id="Status" name="Status">
+            <option value="" selected>Todos</option>
+            <option value="Em processamento">Em processamento</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Reprovado">Reprovado</option>
+            <option value="Em transporte">Em transporte</option>
+            <option value="Entregue">Entregue</option>
+            <option value="Em troca">Em troca</option>
+            <option value="Trocado">Trocado</option>
+            <option value="Fora de mecado">Fora de mercado</option>
+        </select>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Pesquisar" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cliente.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cliente.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DtCadastro)
+        </th>
+        <th>
+            @Html.DisplayName("Ações")
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.Nome)
+        </td>
+        <td>
+            R$ @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DtCadastro)
+        </td>
+        <td>
+            @Html.ActionLink("Detalhes", "Detalhes", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

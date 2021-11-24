@@ -1,0 +1,35 @@
+﻿@model IEnumerable<livraria_les.Models.Categoria>
+@{
+    ViewBag.Title = "Categoria Index";
+}
+
+<h2>Index</h2>
+
+<p> @Html.ActionLink("Adicionar Categoria", "Cadastrar") </p>
+
+<table class="table" id="tblLivros">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayName("Ação")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+                    @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

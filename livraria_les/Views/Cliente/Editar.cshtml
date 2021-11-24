@@ -1,0 +1,75 @@
+﻿@model livraria_les.Models.Cliente
+@{
+    ViewBag.Title = "Cliente Editar";
+}
+
+<br />
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Editar Clientes</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Genero, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Genero, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.DtNascimento, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.DtNascimento, new { htmlAttributes = new { @class = "form-control", @data_mask = "00/00/0000" } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", @data_mask = "000.000.000-00" } })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Usuario.Email, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Usuario.Email, new { htmlAttributes = new { @type = "email", @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Telefone.Tipo, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Telefone.Tipo, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Telefone.DDD, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Telefone.DDD, new { htmlAttributes = new { @class = "form-control", @data_mask = "000" } })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Telefone.Numero, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Telefone.Numero, new { htmlAttributes = new { @class = "form-control", @data_mask = "90000-0000" } })
+        </div>
+    </div>
+    
+    <div>
+        <input type="submit" value="Alterar" class="btn btn-success" />
+        @Html.ActionLink("Voltar", "Index")
+    </div>
+}

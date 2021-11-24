@@ -1,0 +1,128 @@
+﻿@model livraria_les.Models.Livro
+
+@{
+    ViewBag.Title = "Deletar";
+}
+
+<br />
+
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Deletar</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DtCadastro)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DtCadastro)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ativo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ativo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ano)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ano)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Edicao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Edicao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sinopse)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sinopse)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CodBarras)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodBarras)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumPag)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumPag)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Dimensoes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Dimensoes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Peso)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Peso)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Justificativa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Justificativa)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorVenda)
+        </dt>
+        <dd>
+            R$ @Html.DisplayFor(model => model.ValorVenda)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorCompra)
+        </dt>
+        <dd>
+            R$ @Html.DisplayFor(model => model.ValorCompra)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Estoque)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Estoque)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div>
+            <input type="submit" value="Deletar" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir?')" />
+            @Html.ActionLink("Voltar", "Index")
+        </div>
+    }
+</div>

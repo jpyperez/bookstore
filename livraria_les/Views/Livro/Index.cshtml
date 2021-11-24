@@ -1,0 +1,89 @@
+﻿@model IEnumerable<livraria_les.Models.Livro>
+@{
+    ViewBag.Title = "Livro Index";
+}
+
+<h2>Livros</h2>
+
+<p> @Html.ActionLink("Adicionar Livro", "Cadastrar") </p>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Editor("Titulo", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "Título" } })
+        @Html.Editor("Ano", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "Ano" } })
+        @Html.Editor("Edicao", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "Edição" } })
+        @Html.Editor("ISBN", new { htmlAttributes = new { @class = "form-control col-md-3", @placeholder = "ISBN" } })
+        <select class="form-control col-md-2" id="Ativo" name="Ativo">
+            <option value="" selected>Todos</option>
+            <option value="0">Inativo</option>
+            <option value="1">Ativo</option>
+        </select>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Pesquisar" class="btn btn-primary" />
+        </div>
+    </div>
+}
+<table class="table" id="tblLivros">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ano)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Edicao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th>
+                @Html.DisplayName("Ação")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ano)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edicao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </td>
+                <td>
+                    @if (item.Ativo == "1")
+                    {
+                        @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id })
+                        @Html.DisplayName(" | ")
+                        @Html.ActionLink("Editar", "Editar", new { id = item.Id })
+                        @Html.DisplayName(" | ")
+                        @Html.ActionLink("Deletar", "Deletar", new { id = item.Id })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Ativar", "AtivarLivro", new { id = item.Id })
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

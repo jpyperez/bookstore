@@ -1,0 +1,81 @@
+﻿@model IEnumerable<livraria_les.Models.ItemPedido>
+
+@{
+    ViewBag.Title = "Carrinho";
+}
+
+<br />
+
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Carrinho</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Livro.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Livro.ValorVenda)
+            </th>
+            <th>
+                @Html.DisplayName("Ações")
+            </th>
+        </tr>
+        @{ double soma = 0; }
+        @foreach (var item in Model)
+        {
+            { soma += (item.Quantidade * item.Livro.ValorVenda); }
+            <tr>
+                @Html.Hidden("ItemId", item.Livro.Id)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Livro.Id)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.Quantidade, new { htmlAttributes = new { @type = "number" } })
+                </td>
+                <td>
+                    R$ @Html.DisplayFor(modelItem => item.Livro.ValorVenda)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "RemoverCarrinho", new { id = item.Livro.Id })
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="2"></td>
+            <td>
+                @Html.DisplayName("Total")
+            </td>
+            <td>
+                R$ @Html.DisplayName(soma.ToString())
+            </td>
+        </tr>
+    </table>
+    <td>
+        @Html.ActionLink("Continuar comprando", "Index", null, htmlAttributes: new { @class = "btn" })
+        @*<input type="submit" value="Atualizar Carrinho" class="btn btn-primary" />*@
+        @if (soma != 0)
+        {
+            @Html.ActionLink("Checkout", "Checkout", null, htmlAttributes: new { @class = "btn btn-success" })
+        }
+    </td>
+}

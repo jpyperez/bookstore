@@ -1,0 +1,94 @@
+﻿@model IEnumerable<livraria_les.Models.Livro>
+
+@{
+    ViewBag.Title = "Listagem";
+}
+
+<br />
+
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Listagem</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Autor.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Editora.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ano)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edicao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorVenda)
+        </th>
+        <th>
+            @Html.DisplayName("Quantidade")
+        </th>
+        <th>Ações</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <tr>
+                @Html.Hidden("id", item.Id)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Autor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Editora.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ano)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edicao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    R$ @Html.DisplayFor(modelItem => item.ValorVenda)
+                </td>
+                <td>
+                    @Html.TextBox("Quantidade", 0, htmlAttributes: new { type = "number", min = "0" })
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="submit" value="Add ao carrinho" class="btn btn-success" />
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+
+</table>

@@ -1,0 +1,85 @@
+﻿@model livraria_les.Models.Pedido
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Cliente.Id)
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Cliente.Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Cliente.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Cliente.Nome)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Cliente.Nome)
+            </dd>
+            
+            @foreach (var item in Model.ItensPedido)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => item.Livro)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Livro.Titulo)
+                    @if (Model.Status == "Entregue" || Model.Status == "Em troca" && item.Status != "Em troca")
+                    {
+                        @Html.ActionLink("Trocar Livro", "TrocarItem", new { idPedido = Model.Id, idLivro = item.Livro.Id })
+                    }
+                </dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Total)
+            </dt>
+            <dd>
+                R$ @Html.DisplayFor(model => model.Total)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DtCadastro)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DtCadastro)
+            </dd>
+            @if (ViewBag.StatusDDL != null && Session["UserType"].ToString() == "2")
+            {
+                <dt>
+                    @Html.DisplayName("Alterar Status")
+                </dt>
+                <dd>
+                    @Html.DropDownListFor(model => model.Status, (SelectList)ViewBag.StatusDDL, String.Empty, new { @class = "form-control" })
+                </dd>
+            }
+        </dl>
+        <div>
+            @Html.ActionLink("Voltar à lista", "Pedidos", null, htmlAttributes: new { @class = "btn" })
+            <input type="submit" value="Alterar status" class="btn btn-success" onclick='return confirm("Deseja realmente alterar o status?")' />
+        </div>
+    }
+</div>

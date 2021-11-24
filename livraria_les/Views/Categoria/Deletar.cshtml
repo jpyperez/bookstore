@@ -1,0 +1,37 @@
+﻿@model livraria_les.Models.Categoria
+@{
+    ViewBag.Title = "Categoria Deletar";
+}
+
+<br />
+@if (string.IsNullOrWhiteSpace(ViewBag.Erro))
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+}
+else
+{
+    string erro = ViewBag.Erro;
+    erro = erro.Replace("//", "<br />");
+    <div class="alert alert-danger">@Html.Raw(erro)</div>
+}
+
+<h2>Deletar Categoria</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Deletar" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir?')" />
+        @Html.ActionLink("Voltar", "Index")
+    </div>
+}

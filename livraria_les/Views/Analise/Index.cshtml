@@ -1,0 +1,71 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Análise</h2>
+
+@using (@Html.BeginForm())
+{
+    <div class="form-group">
+        <div class="col-md-6">
+            <label class="" for="DataInicial">Data inicial</label>
+            <input type="date" class="form-control" id="DataInicial" name="DataInicial" placeholder="Data inicial">
+        </div>
+        <div class="col-md-6">
+            <label class="" for="DataFinal">Data final</label>
+            <input type="date" class="form-control" id="DataFinal" name="DataFinal" placeholder="Data final">
+        </div>
+    </div>
+    <br /><br /><br />
+    <div class="form-group col-md-12">
+        @Html.Label("Categorias", htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @for (int i = 0; i < ViewBag.CategoriasDDL.Count; i++)
+                {
+                <label class="checkbox-inline"><input type="checkbox" name="CategoriasDDL" value="@ViewBag.CategoriasDDL[i].Id">@ViewBag.CategoriasDDL[i].Nome</label>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Gerar gráfico" class="btn btn-primary" />
+    </div>
+}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+        var dataJson = '@ViewBag.Data';
+        dataJson = dataJson.replace(/&quot;/g, '"');
+        var dataLength = '@ViewBag.DataLength';
+        //console.log(dataJson);
+        var masLen = dataLength - 2;
+        var femLen = dataLength - 3;
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawVisualization);
+
+        function drawVisualization() {
+            // Some raw data (not necessarily accurate)
+            var data = google.visualization.arrayToDataTable(JSON.parse(dataJson));
+
+            var options = {
+                title: 'Vendas X Genero X Dia',
+                vAxis: { title: 'Unidades' },
+                hAxis: { title: 'Dias' },
+                seriesType: 'bars'
+            };
+
+            options["series"] = { masLen, femLen };
+            options.series[masLen] = { type: 'line' };
+            options.series[femLen] = { type: 'line' };
+
+
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+</script>
+
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+
